@@ -35,6 +35,7 @@
 + (void) dismiss;
 
 + (void) showWithStatus:(NSString *)status;
++ (void) showWithStatus:(NSString *)status andBottomOffset:(CGFloat) offset;
 + (void) showSuccessWithStatus:(NSString *)status;
 + (void) showErrorWithStatus:(NSString *)status;
 + (void) showImage:(UIImage *)image status:(NSString *)status;

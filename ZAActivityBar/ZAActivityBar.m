@@ -125,6 +125,10 @@
     [ZAActivityBar showWithStatus:status forAction:DEFAULT_ACTION];
 }
 
++ (void) showWithStatus:(NSString *)status andBottomOffset:(CGFloat) offset {
+    [[ZAActivityBar sharedView] showWithStatus:status forAction:DEFAULT_ACTION andOffset:[NSNumber numberWithFloat:offset]];
+}
+
 + (void) showWithStatus:(NSString *)status forAction:(NSString *)action {
     [[ZAActivityBar sharedView] showWithStatus:status forAction:action];
 }
@@ -138,6 +142,10 @@
 }
 
 - (void) showWithStatus:(NSString *)status forAction:(NSString *)action {
+    [self showWithStatus:status forAction:action andOffset:nil];
+}
+
+- (void) showWithStatus:(NSString *)status forAction:(NSString *)action andOffset:(NSNumber *)offset {
     dispatch_async(dispatch_get_main_queue(), ^{
         if(!self.superview)
             [self.overlayWindow addSubview:self];
@@ -166,8 +174,8 @@
 
             NSString *bounceKeypath = @"position.y";
             id bounceOrigin = [NSNumber numberWithFloat:self.barView.layer.position.y];
-            id bounceFinalValue = [NSNumber numberWithFloat:[self getBarYPosition]];
-            
+            id bounceFinalValue = [NSNumber numberWithFloat:[self getBarYPositionWithBottomOffset:offset]];
+
             SKBounceAnimation *bounceAnimation = [SKBounceAnimation animationWithKeyPath:bounceKeypath];
             bounceAnimation.fromValue = bounceOrigin;
             bounceAnimation.toValue = bounceFinalValue;
@@ -394,7 +402,11 @@
 }
 
 - (float) getBarYPosition {
-    return self.frame.size.height - ((HEIGHT / 2) + PADDING) - BOTTOM_OFFSET;
+    return [self getBarYPositionWithBottomOffset:nil];
+}
+
+- (float) getBarYPositionWithBottomOffset:(NSNumber *)offset {
+    return self.frame.size.height - ((HEIGHT / 2) + PADDING) - (offset ? [offset floatValue] : BOTTOM_OFFSET);
 }
 
 - (void) setYOffset:(float)yOffset {
