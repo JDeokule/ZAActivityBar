@@ -223,7 +223,7 @@
 + (void)showImage:(UIImage *)image status:(NSString *)status forAction:(NSString *)action {
     [[ZAActivityBar sharedView] showImage:image
                                    status:status
-                                 duration:1.0
+                                 duration:.8
                                 forAction:action];
 }
 
@@ -406,7 +406,7 @@
 }
 
 - (float) getBarYPositionWithBottomOffset:(NSNumber *)offset {
-    return self.frame.size.height - ((HEIGHT / 2) + PADDING) - (offset ? [offset floatValue] : BOTTOM_OFFSET);
+    return self.frame.size.height - (HEIGHT / 2) - (offset ? [offset floatValue] : BOTTOM_OFFSET);
 }
 
 - (void) setYOffset:(float)yOffset {
@@ -510,7 +510,7 @@
 		stringLabel.textColor = [UIColor whiteColor];
 		stringLabel.backgroundColor = [UIColor clearColor];
 		stringLabel.adjustsFontSizeToFitWidth = YES;
-		stringLabel.textAlignment = UITextAlignmentLeft;
+		stringLabel.textAlignment = NSTextAlignmentLeft;
 		stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 		stringLabel.font = [UIFont boldSystemFontOfSize:14];
 		stringLabel.shadowColor = [UIColor blackColor];
@@ -536,15 +536,16 @@
 
 - (UIView *)barView {
     if(!barView) {
-        CGRect rect = CGRectMake(PADDING, FLT_MAX, self.frame.size.width, HEIGHT);
-        rect.size.width -= 2 * PADDING;
+        CGRect rect = CGRectMake(0, FLT_MAX, self.frame.size.width, HEIGHT);
+//        rect.size.width -= 2 * PADDING;
         rect.origin.y = [self getOffscreenYPosition];
         barView = [[UIView alloc] initWithFrame:rect];
-        barView.layer.cornerRadius = 6;
+//        barView.layer.cornerRadius = 6;
 		barView.backgroundColor = BAR_COLOR;
         barView.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth);
         [self addSubview:barView];
     }
+    
     return barView;
 }
 
@@ -569,6 +570,29 @@
         [self.barView addSubview:imageView];
     
     return imageView;
+}
+
++ (void) moveToBottom
+{
+    ZAActivityBar *bar = [ZAActivityBar sharedView];
+
+    if ([bar isVisible]) {
+        CGPoint position = bar.barView.layer.position;
+        position.y = [bar getBarYPosition];
+        [bar.barView.layer setPosition:position];
+    }
+}
+
++ (void) moveToOffset:(CGFloat)offset
+{
+    ZAActivityBar *bar = [ZAActivityBar sharedView];
+
+    if ([bar isVisible]) {
+        CGPoint position = bar.barView.layer.position;
+        position.y = [bar getBarYPositionWithBottomOffset:[NSNumber numberWithFloat:offset]];
+        [bar.barView.layer setPosition:position];
+    }
+    
 }
 
 @end
