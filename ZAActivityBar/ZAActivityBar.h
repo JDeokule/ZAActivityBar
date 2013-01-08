@@ -54,7 +54,7 @@
 ///////////////////////////////////////////////////////////////////////
 
 // Custom Additions
-+ (void) showWithStatus:(NSString *)status andBottomOffset:(CGFloat) offset;
++ (void) showWithStatus:(NSString *)status andBottomOffset:(CGFloat) offset animated:(BOOL)animated;
 
 + (void) moveToBottom;
 + (void) moveToOffset:(CGFloat)offset;

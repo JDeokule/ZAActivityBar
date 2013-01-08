@@ -125,8 +125,8 @@
     [ZAActivityBar showWithStatus:status forAction:DEFAULT_ACTION];
 }
 
-+ (void) showWithStatus:(NSString *)status andBottomOffset:(CGFloat) offset {
-    [[ZAActivityBar sharedView] showWithStatus:status forAction:DEFAULT_ACTION andOffset:[NSNumber numberWithFloat:offset]];
++ (void) showWithStatus:(NSString *)status andBottomOffset:(CGFloat) offset animated:(BOOL)animated {
+    [[ZAActivityBar sharedView] showWithStatus:status forAction:DEFAULT_ACTION andOffset:[NSNumber numberWithFloat:offset] animated:animated];
 }
 
 + (void) showWithStatus:(NSString *)status forAction:(NSString *)action {
@@ -142,10 +142,10 @@
 }
 
 - (void) showWithStatus:(NSString *)status forAction:(NSString *)action {
-    [self showWithStatus:status forAction:action andOffset:nil];
+    [self showWithStatus:status forAction:action andOffset:nil animated:YES];
 }
 
-- (void) showWithStatus:(NSString *)status forAction:(NSString *)action andOffset:(NSNumber *)offset {
+- (void) showWithStatus:(NSString *)status forAction:(NSString *)action andOffset:(NSNumber *)offset animated:(BOOL)animated {
     dispatch_async(dispatch_get_main_queue(), ^{
         if(!self.superview)
             [self.overlayWindow addSubview:self];
@@ -171,26 +171,27 @@
             
             // We want to remove the previous animations
             [self removeAnimationForKey:ZA_ANIMATION_DISMISS_KEY];
-
-            NSString *bounceKeypath = @"position.y";
-            id bounceOrigin = [NSNumber numberWithFloat:self.barView.layer.position.y];
             id bounceFinalValue = [NSNumber numberWithFloat:[self getBarYPositionWithBottomOffset:offset]];
 
-            SKBounceAnimation *bounceAnimation = [SKBounceAnimation animationWithKeyPath:bounceKeypath];
-            bounceAnimation.fromValue = bounceOrigin;
-            bounceAnimation.toValue = bounceFinalValue;
-            bounceAnimation.shouldOvershoot = YES;
-            bounceAnimation.numberOfBounces = 4;
-            bounceAnimation.delegate = self;
-            bounceAnimation.removedOnCompletion = YES;
-            bounceAnimation.duration = 0.7f;
-            
-            [self.barView.layer addAnimation:bounceAnimation forKey:@"showAnimation"];
-            
+            if (animated) {
+                NSString *bounceKeypath = @"position.y";
+                id bounceOrigin = [NSNumber numberWithFloat:self.barView.layer.position.y];
+
+                SKBounceAnimation *bounceAnimation = [SKBounceAnimation animationWithKeyPath:bounceKeypath];
+                bounceAnimation.fromValue = bounceOrigin;
+                bounceAnimation.toValue = bounceFinalValue;
+                bounceAnimation.shouldOvershoot = YES;
+                bounceAnimation.numberOfBounces = 4;
+                bounceAnimation.delegate = self;
+                bounceAnimation.removedOnCompletion = YES;
+                bounceAnimation.duration = 0.7f;
+
+                [self.barView.layer addAnimation:bounceAnimation forKey:@"showAnimation"];
+            }
+
             CGPoint position = self.barView.layer.position;
             position.y = [bounceFinalValue floatValue];
             [self.barView.layer setPosition:position];
-            
         }
         
     });
