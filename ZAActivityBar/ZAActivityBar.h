@@ -23,40 +23,25 @@
 // Best not to change these
 #define SPINNER_SIZE 24.0f
 #define ICON_OFFSET (HEIGHT - SPINNER_SIZE) / 2.0f
-#define DEFAULT_ACTION @"defaultAction"
 
 @interface ZAActivityBar : UIView
 
-///////////////////////////////////////////////////////////////////////
+@property (nonatomic) BOOL tapToDismiss;
 
-// Basic use
++ (ZAActivityBar *) showWithStatus:(NSString *)status inView:(UIView *)view;
++ (ZAActivityBar *) showWithStatus:(NSString *)status animated:(BOOL)animated inView:(UIView *)view;
 
-+ (void) show;
-+ (void) dismiss;
++ (ZAActivityBar *) showSuccessWithStatus:(NSString *)status inView:(UIView *)view;
++ (ZAActivityBar *) showErrorWithStatus:(NSString *)status inView:(UIView *)view;
++ (ZAActivityBar *) showImage:(UIImage *)image status:(NSString *)status inView:(UIView *)view;
 
-+ (void) showWithStatus:(NSString *)status;
-+ (void) showSuccessWithStatus:(NSString *)status;
-+ (void) showErrorWithStatus:(NSString *)status;
-+ (void) showImage:(UIImage *)image status:(NSString *)status;
+- (id) initWithParentView:(UIView *) parent;
 
-///////////////////////////////////////////////////////////////////////
+- (void) showSuccessWithStatus:(NSString *)status;
+- (void) showErrorWithStatus:(NSString *)status;
+- (void) showWithStatus:(NSString *)status;
+- (void) showWithStatus:(NSString *)status animated:(BOOL)animated;
 
-// Advanced Use
-
-+ (void) showForAction:(NSString *)action;
-+ (void) dismissForAction:(NSString *)action;
-
-+ (void) showWithStatus:(NSString *)status forAction:(NSString *)action;
-+ (void) showSuccessWithStatus:(NSString *)status forAction:(NSString *)action;
-+ (void) showErrorWithStatus:(NSString *)status forAction:(NSString *)action;
-+ (void) showImage:(UIImage *)image status:(NSString *)status forAction:(NSString *)action;
-
-///////////////////////////////////////////////////////////////////////
-
-// Custom Additions
-+ (void) showWithStatus:(NSString *)status andBottomOffset:(CGFloat) offset animated:(BOOL)animated;
-
-+ (void) moveToBottom;
-+ (void) moveToOffset:(CGFloat)offset;
+- (void) dismiss;
 
 @end
