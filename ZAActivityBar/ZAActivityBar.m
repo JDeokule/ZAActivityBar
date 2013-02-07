@@ -364,25 +364,11 @@ static int counter = 0;
     return stringLabel;
 }
 
-//- (UIWindow *)overlayWindow {
-//    if(!overlayWindow) {
-//        CGRect bounds = [UIScreen mainScreen].bounds;
-//        CGRect theFrame = CGRectMake(bounds.origin.x, bounds.origin.y, bounds.size.width, HEIGHT);
-//        overlayWindow = [[UIWindow alloc] initWithFrame:theFrame];
-//        overlayWindow.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-//        overlayWindow.backgroundColor = [UIColor clearColor];
-//        overlayWindow.userInteractionEnabled = YES;
-//    }
-//    return overlayWindow;
-//}
-
-- (UIView *)barView {
+- (UIView *) barView {
     if(!barView) {
         CGRect rect = CGRectMake(0, FLT_MAX, self.frame.size.width, HEIGHT);
-//        rect.size.width -= 2 * PADDING;
         rect.origin.y = [self getOffscreenYPosition];
         barView = [[UIView alloc] initWithFrame:rect];
-//        barView.layer.cornerRadius = 6;
 		barView.backgroundColor = BAR_COLOR;
         barView.autoresizingMask = (UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth);
 
