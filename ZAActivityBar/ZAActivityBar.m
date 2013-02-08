@@ -108,7 +108,7 @@ static int counter = 0;
             bounceAnimation.delegate = self;
             bounceAnimation.removedOnCompletion = YES;
             bounceAnimation.duration = 0.7f;
-            
+
             [self.barView.layer addAnimation:bounceAnimation forKey:ZA_ANIMATION_SHOW_KEY];
 
             [self setHidden:NO];
@@ -121,11 +121,9 @@ static int counter = 0;
                                 options:0
                              animations:^(void) {
                                  [self setAlpha:1];
-                             } completion:^(BOOL finished) {
-                                 RKLogInfo(@"Finished showing the bar i think");
-                             }];
+                             } completion:nil];
         }
-        
+
         CGPoint position = self.barView.layer.position;
         position.y = [bounceFinalValue floatValue];
         [self.barView.layer setPosition:position];
@@ -138,11 +136,8 @@ static int counter = 0;
                             options:0
                          animations:^(void) {
                              [self setAlpha:1];
-                         } completion:^(BOOL finished) {
-                             RKLogInfo(@"Finished showing the bar i think");
-                         }];
+                         } completion:nil];
     }
-    
 }
 
 - (void) showSuccessWithStatus:(NSString *)status
